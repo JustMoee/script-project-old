@@ -7,14 +7,24 @@ span.operators {
 span.symbo {
     color: #A3C7D6;
 }
+span.number {
+    color: #73198c;
+}
+span.string {
+    color: #197f8c;
+}
+span.funciton {
+    color: #c540ea; 
+}
 span {
     color: white;
-    margin: 0 2px;
 }
 
 .code_editor {
-    padding: 20px;
+    padding: 30px;
     background-color: #2B2757;
-    width: 100%;
+    width: 90%;
+    margin: auto;
     height: 194px;
+    border-radius: 25px;
 }
