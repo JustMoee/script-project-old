@@ -2,7 +2,7 @@ import CodeHighlight from "src/components/coder";
 
 # extracting out the data
 
-After you fetched the link and made a request, in order to extract the data, you’ll get a response from the link you fetched, in order to extract the data probably, you’ll have to use the method then followed by a dot, and assign the kind of response you want to get the data with, json is a famous format for sending and receiving data because it’s a light-weighted javascript object, so using the json on the response will extract the data as a json.:
+##### After you fetched the link and made a request, in order to extract the data, you’ll get a response from the link you fetched, in order to extract the data probably, you’ll have to use the method then followed by a dot, and assign the kind of response you want to get the data with, json is a famous format for sending and receiving data because it’s a light-weighted javascript object, so using the json on the response will extract the data as a json.:
 
 - One
 - Two
@@ -12,33 +12,6 @@ Checkout my React component:
 
 
 <CodeHighlight text={`
-fetch('https://api.example.com/data')
-  .{{INPUT}} {{INPUT2}} {{INPUT3}} {{INPUT4}}(response => response.json())
-;
-
+  const session = useSession()
+  const supabase = useSupabaseClient();
 `}/>
-
-```jsx
-import { useAmp } from 'next/amp'
-export const config = { amp: 'hybrid' }
-function About(props) {
-  const isAmp = useAmp()
-  return (
-    <div>
-      <h3>My AMP About Page!</h3>
-      {isAmp ? (
-        <amp-img
-          width="300"
-          height="300"
-          src="/my-img.jpg"
-          alt="a cool image"
-          layout="responsive"
-        />
-      ) : (
-        <img width="300" height="300" src="/my-img.jpg" alt="a cool image" />
-      )}
-    </div>
-  )
-}
-export default About
-```
