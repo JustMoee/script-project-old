@@ -1,5 +1,5 @@
 export type Lesson = {
-    id: string;
+    id?: string;
     title: string;
     subject_id: string;
     status: boolean;
