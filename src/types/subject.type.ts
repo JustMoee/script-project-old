@@ -1,6 +1,6 @@
 
 export type Subject = {
-    id: string;
+    id?: string;
     title: string;
     level: number;
     status: boolean;
