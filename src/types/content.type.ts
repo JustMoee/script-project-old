@@ -1,8 +1,8 @@
 export type Content = {
-    id: string;
+    id?: string;
     title: string;
     subtitle?: string;
     description: string;
-    subdecription?: string;
+    subdescription?: string;
     lesson_id: string;
 }
