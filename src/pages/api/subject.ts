@@ -121,7 +121,7 @@ async function put(req: NextApiRequest, res: NextApiResponse) {
       message: "[FAILED] id param is messing",
       code: HttpStatusCode.NotFound,
     });
-  const { data, error } = await supabase.from(TABLE).update(body).select();
+  const { data, error } = await supabase.from(TABLE).update(body).eq('id', param["id"]).select();
   if (data) return res.status(HttpStatusCode.Accepted).json(data[0]);
   if (error)
     return res.status(HttpStatusCode.BadRequest).json({
