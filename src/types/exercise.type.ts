@@ -1,7 +1,7 @@
 export type Exercise = {
-    id: string;
+    id?: string;
     code: string;
     content_id: string;
-    point: string;
-    answers: string[];
+    point: number;
+    answers: string[] | string;
 }
