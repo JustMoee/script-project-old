@@ -1,4 +1,8 @@
-import { Content } from "@/types/content.type";
+import {
+  Content,
+  ContentSchema,
+  ContentUpdateDTOSchema,
+} from "@/types/content.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
 import { HttpStatusCode } from "../../shared/http-status-code.enum";
@@ -27,9 +31,11 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       message: "there no fields to update",
       code: HttpStatusCode.BadRequest,
     });
-  if (!body["lesson_id"])
+  const check = ContentSchema.safeParse(body);
+  if (!check.success)
     return res.status(HttpStatusCode.BadRequest).json({
-      message: "[FAILED] lesson_id is messing",
+      message: "Invalid data",
+      errors: check.error.formErrors.fieldErrors,
       code: HttpStatusCode.BadRequest,
     });
   const { data, error } = await supabase
@@ -38,9 +44,9 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       {
         title: body["title"],
         lesson_id: body["lesson_id"],
-        description: body['description'],
-        subdescription: body['subdescription'],
-        subtitle: body['subtitle']
+        description: body["description"],
+        subdescription: body["subdescription"],
+        subtitle: body["subtitle"],
       },
     ])
     .select();
@@ -92,7 +98,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
     if (data) return res.status(HttpStatusCode.Ok).json(data);
     else
       return res.status(HttpStatusCode.NotFound).json({
-        message: "[FAILED] user not found or not exist",
+        message: "content - not found or not exist",
         code: HttpStatusCode.NotFound,
       });
   } else {
@@ -126,6 +132,13 @@ async function put(req: NextApiRequest, res: NextApiResponse) {
     return res.status(HttpStatusCode.NotFound).json({
       message: "[FAILED] id param is messing",
       code: HttpStatusCode.NotFound,
+    });
+  const check = ContentUpdateDTOSchema.safeParse(body);
+  if (!check.success)
+    return res.status(HttpStatusCode.BadRequest).json({
+      message: "Invalid data",
+      errors: check.error.formErrors.fieldErrors,
+      code: HttpStatusCode.BadRequest,
     });
   const { data, error } = await supabase
     .from(TABLE)

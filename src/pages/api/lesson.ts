@@ -1,4 +1,4 @@
-import { Lesson } from "@/types/lesson.type";
+import { Lesson, LessonSchema, LessonUpdateDTOSchema } from "@/types/lesson.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
 import { HttpStatusCode } from "../../shared/http-status-code.enum";
@@ -27,9 +27,12 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       message: "there no fields to update",
       code: HttpStatusCode.BadRequest,
     });
-  if (!body["subject_id"])
+  // check if body exist or not
+  const check = LessonSchema.safeParse(body);
+  if (!check.success)
     return res.status(HttpStatusCode.BadRequest).json({
-      message: "[FAILED] subject_id is messing",
+      message: "Invalid data",
+      errors: check.error.formErrors.fieldErrors,
       code: HttpStatusCode.BadRequest,
     });
   const { data, error } = await supabase
@@ -124,6 +127,13 @@ async function put(req: NextApiRequest, res: NextApiResponse) {
     return res.status(HttpStatusCode.NotFound).json({
       message: "[FAILED] id param is messing",
       code: HttpStatusCode.NotFound,
+    });
+  const check = LessonUpdateDTOSchema.safeParse(body);
+  if (!check.success)
+    return res.status(HttpStatusCode.BadRequest).json({
+      message: "Invalid data",
+      errors: check.error.formErrors.fieldErrors,
+      code: HttpStatusCode.BadRequest,
     });
   const { data, error } = await supabase
     .from(TABLE)

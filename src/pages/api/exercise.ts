@@ -1,7 +1,7 @@
-import { Exercise } from "@/types/exercise.type";
+import { Exercise, ExerciseSchema, ExerciseUpdateDTOSchema } from "@/types/exercise.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
-import { HttpStatusCode } from "../../shared/http-status-code.enum";
+import { HttpStatusCode } from "@/shared/http-status-code.enum";
 const TABLE = "Exercise";
 // control handler
 export default function handler(
@@ -36,6 +36,13 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
     if (Array.isArray(body["answers"]))
       body["answers"] = body["answers"].join(";");
   }
+  const check = ExerciseSchema.safeParse(body);
+  if (!check.success)
+    return res.status(HttpStatusCode.BadRequest).json({
+      message: "Invalid data",
+      errors: check.error.formErrors.fieldErrors,
+      code: HttpStatusCode.BadRequest,
+    });
   const { data, error } = await supabase
     .from(TABLE)
     .insert<Exercise>([
@@ -142,6 +149,13 @@ async function put(req: NextApiRequest, res: NextApiResponse) {
        if (Array.isArray(body["answers"]))
         body["answers"] = body["answers"].join(";");
     }
+    const check = ExerciseUpdateDTOSchema.safeParse(body);
+    if (!check.success)
+      return res.status(HttpStatusCode.BadRequest).json({
+        message: "Invalid data",
+        errors: check.error.formErrors.fieldErrors,
+        code: HttpStatusCode.BadRequest,
+      });
   const { data, error } = await supabase
     .from(TABLE)
     .update(body)

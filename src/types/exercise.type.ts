@@ -1,7 +1,22 @@
-export type Exercise = {
-    id?: string;
-    code: string;
-    content_id: string;
-    point: number;
-    answers: string[] | string;
-}
+
+
+import { z } from "zod";
+//Exercise
+export const ExerciseSchema = z.object({
+    id: z.string().uuid().optional(),
+    code: z.string({ required_error: "code is required" }),
+    content_id: z.string({ required_error: "content_id is required" }).uuid(),
+    point: z.number({ required_error: "point is required" }).min(0, 'must be greater than 0'),
+    answers: z.any(),
+  });
+  export const ExerciseUpdateDTOSchema = ExerciseSchema.extend({
+    id: z.string().uuid().optional(),
+    code: z.string().optional(),
+    content_id: z.string().uuid().optional(),
+    point: z.number().min(0, 'must be greater than 0').optional(),
+    answers: z.any().optional(),
+  });
+  export type Exercise = z.infer<
+    typeof ExerciseSchema | typeof ExerciseUpdateDTOSchema
+  >;
+

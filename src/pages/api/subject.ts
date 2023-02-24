@@ -1,4 +1,8 @@
-import { Subject } from "@/types/subject.type";
+import {
+  Subject,
+  SubjectSchema,
+  SubjectUpdateDTOSchema,
+} from "@/types/subject.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
 import { HttpStatusCode } from "../../shared/http-status-code.enum";
@@ -22,12 +26,13 @@ export default function handler(
 async function post(req: NextApiRequest, res: NextApiResponse) {
   const body = req["body"] as Subject;
   // check if body exist or not
-  if (!body || !Object.keys(body).length)
+  const check = SubjectSchema.safeParse(body);
+  if (!check.success)
     return res.status(HttpStatusCode.BadRequest).json({
-      message: "there no fields to update",
+      message: "Invalid data",
+      errors: check.error.formErrors.fieldErrors,
       code: HttpStatusCode.BadRequest,
     });
-
   const { data, error } = await supabase
     .from(TABLE)
     .insert<Subject>([
@@ -35,6 +40,7 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
         title: body["title"],
         status: true,
         level: body["level"],
+        language: body["language"],
       },
     ])
     .select();
@@ -48,11 +54,11 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
   });
 }
 /**
- * 
- * @param req 
- * @param isActive 
- * @param isDeleted 
- * @returns 
+ *
+ * @param req
+ * @param isActive
+ * @param isDeleted
+ * @returns
  */
 async function getById(
   req: NextApiRequest,
@@ -92,7 +98,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
   } else {
     const { data, error } = await supabase
       .from(TABLE)
-      .select()
+      .select("*")
       .eq("isActive", true)
       .eq("isDeleted", false);
     if (data) return res.status(HttpStatusCode.Ok).json(data as Subject[]);
@@ -121,7 +127,18 @@ async function put(req: NextApiRequest, res: NextApiResponse) {
       message: "[FAILED] id param is messing",
       code: HttpStatusCode.NotFound,
     });
-  const { data, error } = await supabase.from(TABLE).update(body).eq('id', param["id"]).select();
+  const check = SubjectUpdateDTOSchema.safeParse(body);
+  if (!check.success)
+    return res.status(HttpStatusCode.BadRequest).json({
+      message: "Invalid data",
+      errors: check.error.formErrors.fieldErrors,
+      code: HttpStatusCode.BadRequest,
+    });
+  const { data, error } = await supabase
+    .from(TABLE)
+    .update(body)
+    .eq("id", param["id"])
+    .select();
   if (data) return res.status(HttpStatusCode.Accepted).json(data[0]);
   if (error)
     return res.status(HttpStatusCode.BadRequest).json({
