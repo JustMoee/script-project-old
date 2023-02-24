@@ -1,7 +1,7 @@
 import { Exercise } from "@/types/exercise.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
-import { HttpStatusCode } from "./http-status-code.enum";
+import { HttpStatusCode } from "../../shared/http-status-code.enum";
 const TABLE = "Exercise";
 // control handler
 export default function handler(

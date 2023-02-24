@@ -1,7 +1,7 @@
 import { Content } from "@/types/content.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
-import { HttpStatusCode } from "./http-status-code.enum";
+import { HttpStatusCode } from "../../shared/http-status-code.enum";
 const TABLE = "Content";
 // control handler
 export default function handler(

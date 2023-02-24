@@ -1,7 +1,7 @@
 import { Subject } from "@/types/subject.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
-import { HttpStatusCode } from "./http-status-code.enum";
+import { HttpStatusCode } from "../../shared/http-status-code.enum";
 const TABLE = "Subject";
 // control handler
 export default function handler(
