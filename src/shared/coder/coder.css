@@ -1,0 +1,30 @@
+span.keyword {
+    color: #A3C7D6;
+}
+span.operators {
+    color: #9F73AB;
+}
+span.symbo {
+    color: #A3C7D6;
+}
+span.number {
+    color: #73198c;
+}
+span.string {
+    color: #197f8c;
+}
+span.funciton {
+    color: #c540ea; 
+}
+span {
+    color: white;
+}
+
+.code_editor {
+    padding: 30px;
+    background-color: #2B2757;
+    width: 90%;
+    margin: auto;
+    height: 194px;
+    border-radius: 25px;
+}
