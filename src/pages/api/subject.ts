@@ -96,16 +96,25 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
         code: HttpStatusCode.NotFound,
       });
   } else {
-    const { data, error } = await supabase
+    
+    const select = param["lesson"]  ? `title, id, level, Lesson(title, id)` : "title, id, level";
+    const limit = param && param["limit"] ? +param["limit"] : 50;
+    let request =  supabase
       .from(TABLE)
-      .select("*")
+      .select(select)
       .eq("isActive", true)
-      .eq("isDeleted", false);
+      .eq("isDeleted", false)
+      .limit(limit);
+    if(param['langauge'])
+      request = request.eq("language", param['language'])
+      
+
+      const { data, error } = await request
     if (data) return res.status(HttpStatusCode.Ok).json(data as Subject[]);
     else
       return res
         .status(HttpStatusCode.NotFound)
-        .json({ message: error["message"], code: HttpStatusCode.NotFound });
+        .json({ message: error!["message"] , code: HttpStatusCode.NotFound });
   }
 }
 /**

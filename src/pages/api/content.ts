@@ -102,11 +102,15 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
         code: HttpStatusCode.NotFound,
       });
   } else {
-    const { data, error } = await supabase
+    const select =  'id,title, description,subdescription, subtitle, lesson_id'
+    let request  =  supabase
       .from(TABLE)
-      .select()
+      .select(select)
       .eq("isActive", true)
       .eq("isDeleted", false);
+      if(param['lesson_id'])
+      request = request.eq("lesson_id", param['lesson_id'])
+      const { data, error } = await request;
     if (data) return res.status(HttpStatusCode.Ok).json(data as Content[]);
     else
       return res

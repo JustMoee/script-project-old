@@ -1,4 +1,8 @@
-import { Lesson, LessonSchema, LessonUpdateDTOSchema } from "@/types/lesson.type";
+import {
+  Lesson,
+  LessonSchema,
+  LessonUpdateDTOSchema,
+} from "@/types/lesson.type";
 import { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "lib/supabaseClient";
 import { HttpStatusCode } from "../../shared/http-status-code.enum";
@@ -97,11 +101,17 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
         code: HttpStatusCode.NotFound,
       });
   } else {
-    const { data, error } = await supabase
+    const select = param["content"]
+      ? "id, title, subject_id, Content( id,title, description,subdescription, subtitle)"
+      : "id, title, subject_id";
+    let request = supabase
       .from(TABLE)
-      .select()
+      .select(select)
       .eq("isActive", true)
       .eq("isDeleted", false);
+    if(param['subject_id'])
+      request = request.eq("subject_id", param['subject_id'])
+    const { data, error } = await request;
     if (data) return res.status(HttpStatusCode.Ok).json(data as Lesson[]);
     else
       return res
