@@ -45,7 +45,8 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
       {
         title: body["title"],
         status: true,
-        subject_id: body["subject_id"],
+        level: body['level'],
+        subject_id: body["subject_id"], 
       },
     ])
     .select();
