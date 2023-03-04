@@ -42,19 +42,11 @@ const Table = ({ columns, data }: any) => {
     useGlobalFilter
   );
 
-  // const onChange = useAsyncDebounce(value => {
-  //   setGlobalFilter(value || undefined)
-  // }, 200)
   // Render the UI for your table
   return (
     <>
       <div className="flex justify-between items-center mb-20 w-full">
-        <input
-          type="text"
-          placeholder="Search"
-          className="input input-bordered input-md w-full max-w-xs"
-          onChange={(e) => e.target.value}
-        />
+        <div></div>
         <button className="btn btn-accent">Button</button>
       </div>
       <div className="overflow-x-auto  w-full">

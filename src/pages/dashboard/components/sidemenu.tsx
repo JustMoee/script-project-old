@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import { useState, useEffect } from "react";
 import { IconType } from "react-icons";
@@ -26,10 +27,12 @@ export default function SideMenuComponent() {
       },
     ]);
   }, []);
+
+  const router = useRouter();
   return (
     <>
       <ul className={style['side-menu']}>
-        <li>
+        <li >
           <Link href={"/dashboard/subject"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

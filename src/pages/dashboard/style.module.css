@@ -11,7 +11,7 @@
     grid-template-columns: 54px 1fr;
 }
 .dashboard-content-layout {
-    @apply flex flex-col    ;
+    @apply flex flex-col    bg-neutral-focus;
 }
 .dashboard-content-grid-layout {
     @apply grid;
