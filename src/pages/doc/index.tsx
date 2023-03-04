@@ -12,19 +12,7 @@ export default function DocPage() {
   return (
     <>
     <DocLyaout>
-    <div  className={fira_sans.className}>
-      <section className={style.doc}>
-        <div>
-          <SidebarComponent />
-        </div>
-        <div className={style.content}>
-          <CodeHighlight
-            text={`  const session = useSession()
-                 const supabase = useSupabaseClient();`}
-          />
-        </div>
-      </section>
-      </div>
+    
       </DocLyaout>
     </>
   );
