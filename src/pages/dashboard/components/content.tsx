@@ -4,7 +4,7 @@ import React from "react";
 import { FC, useState } from "react";
 import { TableData, TableHeader } from "../type";
 import { useAsyncDebounce, useGlobalFilter, useTable } from "react-table";
-
+import FormComponent from "./form";
 const ContentComponent: FC<{
   header: TableHeader[] | any[] | undefined;
   data: TableData[] | any[];
@@ -47,7 +47,12 @@ const Table = ({ columns, data }: any) => {
     <>
       <div className="flex justify-between items-center mb-20 w-full">
         <div></div>
-        <button className="btn btn-accent">Button</button>
+        <div >
+        <label  className="btn btn-accent" htmlFor="my-modal-4">
+          Button
+        </label>
+      
+        </div>
       </div>
       <div className="overflow-x-auto  w-full">
         <table {...getTableProps()} className="table table-zebra w-full">
@@ -78,6 +83,13 @@ const Table = ({ columns, data }: any) => {
           </tbody>
         </table>
       </div>
+  
+      <input type="checkbox" id="my-modal-4" className="modal-toggle" />
+      <label htmlFor="my-modal-4" className="modal cursor-pointer">
+        <label className="modal-box relative" htmlFor="">
+            <FormComponent data={{title: '', level: 0, language: ''}} op="add" type="subject" />
+        </label>
+      </label>
     </>
   );
 };

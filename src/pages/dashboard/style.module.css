@@ -1,6 +1,6 @@
 
 .side-menu {
-    @apply menu bg-base-100  h-full min-h-[100vh] gap-8 items-center py-4 border-solid border-primary border-[1px];
+    @apply menu bg-base-100  h-full min-h-[100vh] gap-8 items-center py-4 border-solid border-accent border-[1px];
 
 }
 .side-menu li > a {
@@ -18,10 +18,26 @@
     grid-template-columns: 20rem 1fr;
 }
 .side-menu-navigator{
-    @apply menu bg-base-100 p-2 border-solid border-primary border-[1px] min-h-[100vh];
+    @apply menu bg-base-100 p-2 border-solid border-accent border-[1px] min-h-[100vh];
 }
 
 
 .dashboard-nav-and-table {
     @apply flex flex-col gap-20 items-center;
+}
+
+.form {
+    @apply flex flex-col gap-4 text-[1.6rem];
+}
+.form .form-control input {
+    @apply text-[1.6rem];
+}
+.form-control {
+    @apply flex flex-col gap-2 w-full;
+}
+.form-control input{
+    @apply input input-bordered input-accent w-full input-lg;
+}
+.form-control small {
+    @apply text-[75%] text-error ;
 }
