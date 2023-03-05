@@ -44,7 +44,7 @@ export default function DashboardPage() {
                   </div>
                 </>
               ) : (
-                <ContentComponent header={header} data={data} />
+                <ContentComponent header={header} data={data} type={page as 'subject' | 'lesson' | 'content' | 'exercies'}/>
               )}
             </section>
           </div>

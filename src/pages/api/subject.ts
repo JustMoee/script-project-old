@@ -24,7 +24,9 @@ export default function handler(
  * @description create subject
  */
 async function post(req: NextApiRequest, res: NextApiResponse) {
-  const body = req["body"] as Subject;
+  let body = req["body"] as Subject ;
+  if( typeof body == 'string')
+    body = JSON.parse(body as string) as Subject;
   // check if body exist or not
   const check = SubjectSchema.safeParse(body);
   if (!check.success)
@@ -97,7 +99,7 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
       });
   } else {
     
-    const select = param["lesson"]  ? `title, id, level, Lesson(title, id)` : "title, id, level";
+    const select = param["lesson"]  ? `title, id, level, language, Lesson(title, id)` : "title, id, level, language";
     const limit = param && param["limit"] ? +param["limit"] : 50;
     let request =  supabase
       .from(TABLE)

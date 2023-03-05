@@ -41,3 +41,6 @@
 .form-control small {
     @apply text-[75%] text-error ;
 }
+.action {
+    @apply mt-6;
+}

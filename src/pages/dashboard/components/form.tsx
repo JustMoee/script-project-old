@@ -5,7 +5,7 @@ import { Exercise } from "@/types/exercise.type";
 import { Content } from "@/types/content.type";
 import { Formik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import style from '../style.module.css';
+import style from "../style.module.css";
 const FormComponent: FC<{
   type: "exercies" | "subject" | "lesson" | "content";
   data: Subject | Lesson | Content | Exercise;
@@ -19,31 +19,115 @@ const FormComponent: FC<{
     >
       {({ errors, values, handleChange }) => {
         const value = values as Subject;
-        const error = errors as Subject
+        const error = errors as Subject;
         return (
-          <form className={style['form']}>
-            <div className={style["form-control"]}>
-            <input value={value["title"]} onChange={handleChange("title")} />
-              <small>{error['title']}</small>
-            </div>
-            <div className={style["form-control"]}>
-            <input value={value["language"]} onChange={handleChange("language")} />
-              <small>{error['language']}</small>
-            </div>
-            <div className={style["form-control"]}>
-            <input value={value["level"]} onChange={handleChange("level")} />
-              <small>{error['level']}</small>
-            </div>
-            <div className="action">
-              <button onClick={() => console.log('vlaues ==>', value)} className="btn">
-                {e.op}
+          <>
+            <form className={style["form"]}>
+              {e.type == "subject" ? (
+                <SubjectForm
+                  error={error}
+                  value={value}
+                  handleChange={handleChange}
+                />
+              ) : (
+                <SubjectForm
+                  error={error}
+                  value={value}
+                  handleChange={handleChange}
+                />
+              )}
+            </form>
+            <div className={style.action}>
+              <button
+                onClick={() => {
+                  action(value, "subject", e.op);
+                }}
+                className="btn"
+              >
+                {e.op + " " + e.type}
               </button>
             </div>
-          </form>
+          </>
         );
       }}
     </Formik>
   );
 };
+// Subject form for subject add and edit
+const SubjectForm: FC<{
+  value: any;
+  error: any;
+  handleChange: (d: string) => void;
+}> = (e) => (
+  <>
+    <div className={style["form-control"]}>
+      <input
+        value={e.value["title"]}
+        onChange={e.handleChange("title")!}
+        placeholder="title"
+      />
+      <small>{e.error["title"]}</small>
+    </div>
+    <div className={style["form-control"]}>
+      <input
+        value={e.value["language"]}
+        onChange={e.handleChange("language")!}
+        placeholder="language"
+      />
+      <small>{e.error["language"]}</small>
+    </div>
+    <div className={style["form-control"]}>
+      <input
+        value={e.value["level"]}
+        onChange={e.handleChange("level")!}
+        placeholder="level"
+        type="number"
+      />
+      <small>{e.error["level"]}</small>
+    </div>
+  </>
+);
 
+
+const LessonForm: FC<{
+  value: any;
+  error: any;
+  handleChange: (d: string) => void;
+}> = (e) => (
+  <>
+    <div className={style["form-control"]}>
+      <input
+        value={e.value["title"]}
+        onChange={e.handleChange("title")!}
+        placeholder="title"
+      />
+      <small>{e.error["title"]}</small>
+    </div>
+    <div className={style["form-control"]}>
+      <input
+        value={e.value["language"]}
+        onChange={e.handleChange("language")!}
+        placeholder="language"
+      />
+      <small>{e.error["language"]}</small>
+    </div>
+    <div className={style["form-control"]}>
+      <input
+        value={e.value["level"]}
+        onChange={e.handleChange("level")!}
+        placeholder="level"
+        type="number"
+      />
+      <small>{e.error["level"]}</small>
+    </div>
+  </>
+);
+const action = async (data: Subject, router: string, op: "add" | "edit") => {
+  const res = await fetch(`/api/${router}`, {
+    body: JSON.stringify(data),
+    method: "POST",
+  }).then(async (re) => await re.json());
+
+  console.log("res ==>", res);
+};
 export default FormComponent;

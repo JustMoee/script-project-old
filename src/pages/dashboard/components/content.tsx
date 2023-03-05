@@ -5,12 +5,15 @@ import { FC, useState } from "react";
 import { TableData, TableHeader } from "../type";
 import { useAsyncDebounce, useGlobalFilter, useTable } from "react-table";
 import FormComponent from "./form";
+import { Subject } from "@/types/subject.type";
 const ContentComponent: FC<{
   header: TableHeader[] | any[] | undefined;
   data: TableData[] | any[];
+  type: "subject" | "lesson" | "content" | "exercies";
 }> = (prpo) => {
   const { header } = prpo;
   const { data } = prpo;
+  const { type } = prpo;
   //  const {filter, setFilter} = useState<string>('');
   let counter = 0;
   console.log(prpo);
@@ -20,13 +23,19 @@ const ContentComponent: FC<{
         <Table
           columns={header?.map((th) => ({ Header: th.name, accessor: th.key }))}
           data={data}
+          type={type}
         />
       </section>
     </>
   );
 };
-const Table = ({ columns, data }: any) => {
-  // Use the state and functions returned from useTable to build your UI
+const Table = ({ columns, data, type, }: any) => {
+  const [form, setForm] = useState<Subject>({
+    title: "",
+    language: "",
+    level: 0,
+  });
+  const [op, setOp] = useState<'add' | 'edit'>('add')
   const {
     getTableProps,
     getTableBodyProps,
@@ -47,11 +56,10 @@ const Table = ({ columns, data }: any) => {
     <>
       <div className="flex justify-between items-center mb-20 w-full">
         <div></div>
-        <div >
-        <label  className="btn btn-accent" htmlFor="my-modal-4">
-          Button
-        </label>
-      
+        <div>
+          <label className="btn btn-accent" htmlFor="my-modal-4">
+            {type}
+          </label>
         </div>
       </div>
       <div className="overflow-x-auto  w-full">
@@ -64,6 +72,7 @@ const Table = ({ columns, data }: any) => {
                     {column.render("Header")}
                   </th>
                 ))}
+                <th></th>
               </tr>
             ))}
           </thead>
@@ -77,17 +86,40 @@ const Table = ({ columns, data }: any) => {
                       <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
                     );
                   })}
+                  <td className="flex justify-end">
+                    <label
+                      htmlFor="my-modal-4"
+                      className="btn bg-warning text-white"
+                      onClick={() => {
+                        setOp('edit');
+                        setForm(row["original"] as Subject);
+                        console.log("form ==<", form);
+                      }}
+                    >
+                      edit
+                    </label>
+                    <label
+                      htmlFor="my-modal-4"
+                      className="btn bg-error text-white"
+                    >
+                      delete
+                    </label>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
       </div>
-  
+
       <input type="checkbox" id="my-modal-4" className="modal-toggle" />
-      <label htmlFor="my-modal-4" className="modal cursor-pointer">
-        <label className="modal-box relative" htmlFor="">
-            <FormComponent data={{title: '', level: 0, language: ''}} op="add" type="subject" />
+      <label htmlFor="my-modal-4" className="modal cursor-pointer ">
+        <label
+          className="modal-box relative flex flex-col gap-8 text-[1.6rem]"
+          htmlFor=""
+        >
+          <div className="">{type}</div>
+          <FormComponent data={form} op={op} type={type} />
         </label>
       </label>
     </>
