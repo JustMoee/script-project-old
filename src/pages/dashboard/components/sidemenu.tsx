@@ -1,16 +1,17 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { FC } from "react";
 import { useState, useEffect } from "react";
 import { IconType } from "react-icons";
 import { CiPlug1, CiShirt } from "react-icons/ci";
-import style from '../style.module.css'
+import style from "../style.module.css";
 type NavItem = {
   name: string;
   path: string;
   icon: IconType;
 };
-export default function SideMenuComponent() {
+export default function SideMenuComponent(props: { pramsQuery: any }) {
+  const { pramsQuery } = props;
   const [navItem, setNavItem] = useState([] as NavItem[]);
 
   useEffect(() => {
@@ -31,9 +32,14 @@ export default function SideMenuComponent() {
   const router = useRouter();
   return (
     <>
-      <ul className={style['side-menu']}>
-        <li >
-          <Link href={"/dashboard/subject"}>
+      <ul className={style["side-menu"]}>
+        <li>
+          <Link
+            href={"/dashboard/subject"}
+            className={`${
+              pramsQuery["page"] == "subject" ? style["active"] : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -51,7 +57,12 @@ export default function SideMenuComponent() {
           </Link>
         </li>
         <li>
-          <Link href="/dashboard/lesson">
+          <Link
+            href="/dashboard/lesson"
+            className={`${
+              pramsQuery["page"] == "lesson" ? style["active"] : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -69,8 +80,35 @@ export default function SideMenuComponent() {
           </Link>
         </li>
         <li>
-        <Link href="/dashboard/content">
-
+          <Link
+            href="/dashboard/content"
+            className={`${
+              pramsQuery["page"] == "content" ? style["active"] : ""
+            }`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+              />
+            </svg>
+          </Link>
+        </li>
+        <li>
+          <Link
+            href="/dashboard/exercise"
+            className={`${
+              pramsQuery["page"] == "exercise" ? style["active"] : ""
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"

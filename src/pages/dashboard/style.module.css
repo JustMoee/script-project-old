@@ -6,6 +6,9 @@
 .side-menu li > a {
     @apply rounded;
 }
+.side-menu li > a.active {
+    @apply bg-accent;
+}
 .dashboard-layout {
     @apply grid;
     grid-template-columns: 54px 1fr;
@@ -16,6 +19,10 @@
 .dashboard-content-grid-layout {
     @apply grid;
     grid-template-columns: 20rem 1fr;
+}
+.dashboard-content-grid-layout-full {
+    @apply grid;
+    grid-template-columns:  1fr;
 }
 .side-menu-navigator{
     @apply menu bg-base-100 p-2 border-solid border-accent border-[1px] min-h-[100vh];

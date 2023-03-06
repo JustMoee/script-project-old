@@ -23,12 +23,14 @@ export default function DashboardPage() {
   ];
   return (
     <>
+    {/*           <div className={`${router.query.page != 'subject' ?style["dashboard-content-grid-layout-full"]: style['dashboard-content-grid-layout']}'`}>
+ */}
       <main className={style["dashboard-layout"]}>
-        <SideMenuComponent />
+        <SideMenuComponent pramsQuery={router.query} />
         <section className={style["dashboard-content-layout"]}>
-          <div className={style["dashboard-content-grid-layout"]}>
+          <div className={style[`dashboard-content-grid-layout${router.query.page == 'subject'? '-full': ''}`]}>
             <SideNavigatorComponent></SideNavigatorComponent>
-            <section className={style["dashboard-nav-and-table"]}>
+            <section className={`${style["dashboard-nav-and-table"]}`}>
               <div className="navbar bg-base-100 border-solid border-[1px] border-accent">
                 <a className="btn btn-ghost normal-case text-xl">
                   {router.query.page}

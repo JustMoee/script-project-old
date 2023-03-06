@@ -11,28 +11,29 @@ const FormComponent: FC<{
   data: Subject | Lesson | Content | Exercise;
   op: "add" | "edit";
 }> = (e) => {
+  console.log('data from form ==> ', e.data)
   return (
     <Formik
       initialValues={e.data}
       validationSchema={toFormikValidationSchema(SubjectSchema)}
       onSubmit={console.log}
     >
-      {({ errors, values, handleChange }) => {
-        const value = values as Subject;
-        const error = errors as Subject;
+      {({ errors, values, handleChange,initialValues}) => {
+
+        console.log('value initialValues==> ', initialValues)
         return (
           <>
             <form className={style["form"]}>
               {e.type == "subject" ? (
                 <SubjectForm
-                  error={error}
-                  value={value}
+                  error={errors}
+                  value={values}
                   handleChange={handleChange}
                 />
               ) : (
-                <SubjectForm
-                  error={error}
-                  value={value}
+                <LessonForm
+                  error={errors}
+                  value={values}
                   handleChange={handleChange}
                 />
               )}
@@ -40,7 +41,7 @@ const FormComponent: FC<{
             <div className={style.action}>
               <button
                 onClick={() => {
-                  action(value, "subject", e.op);
+                  action(values, "subject", e.op);
                 }}
                 className="btn"
               >
@@ -58,7 +59,10 @@ const SubjectForm: FC<{
   value: any;
   error: any;
   handleChange: (d: string) => void;
-}> = (e) => (
+}> = (e) => {
+    console.log('value eee ==>', e.value)
+    console.log(' eee ==>', e)
+  return (
   <>
     <div className={style["form-control"]}>
       <input
@@ -86,7 +90,7 @@ const SubjectForm: FC<{
       <small>{e.error["level"]}</small>
     </div>
   </>
-);
+)};
 
 
 const LessonForm: FC<{
@@ -122,6 +126,15 @@ const LessonForm: FC<{
     </div>
   </>
 );
+
+
+
+
+
+
+
+
+
 const action = async (data: Subject, router: string, op: "add" | "edit") => {
   const res = await fetch(`/api/${router}`, {
     body: JSON.stringify(data),

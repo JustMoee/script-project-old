@@ -57,7 +57,10 @@ const Table = ({ columns, data, type, }: any) => {
       <div className="flex justify-between items-center mb-20 w-full">
         <div></div>
         <div>
-          <label className="btn btn-accent" htmlFor="my-modal-4">
+          <label className="btn btn-accent" htmlFor="my-modal-4" onClick={() => {
+           setForm({'title': '', language: '', level: 0}) 
+           setOp('add')
+          }}>
             {type}
           </label>
         </div>
@@ -94,12 +97,13 @@ const Table = ({ columns, data, type, }: any) => {
                         setOp('edit');
                         setForm(row["original"] as Subject);
                         console.log("form ==<", form);
+                        console.log("row ==<", row);
                       }}
                     >
                       edit
                     </label>
                     <label
-                      htmlFor="my-modal-4"
+                    onClick={() => deletItem((row['original'] as Subject).id!, type)}
                       className="btn bg-error text-white"
                     >
                       delete
@@ -125,6 +129,11 @@ const Table = ({ columns, data, type, }: any) => {
     </>
   );
 };
+const deletItem = async (id: string, type: string) => {
+  await fetch('/api/'+type+"/?id="+id, {
+    method:'DELETE'
+  }).then(() => console.log('delete success'))
+}
 export default ContentComponent;
 
 {
