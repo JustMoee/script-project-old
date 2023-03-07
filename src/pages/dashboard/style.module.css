@@ -1,0 +1,53 @@
+
+.side-menu {
+    @apply menu bg-base-100  h-full min-h-[100vh] gap-8 items-center py-4 border-solid border-accent border-[1px];
+
+}
+.side-menu li > a {
+    @apply rounded;
+}
+.side-menu li > a.active {
+    @apply bg-accent;
+}
+.dashboard-layout {
+    @apply grid;
+    grid-template-columns: 54px 1fr;
+}
+.dashboard-content-layout {
+    @apply flex flex-col    bg-neutral-focus;
+}
+.dashboard-content-grid-layout {
+    @apply grid;
+    grid-template-columns: 20rem 1fr;
+}
+.dashboard-content-grid-layout-full {
+    @apply grid;
+    grid-template-columns:  1fr;
+}
+.side-menu-navigator{
+    @apply menu bg-base-100 p-2 border-solid border-accent border-[1px] min-h-[100vh];
+}
+
+
+.dashboard-nav-and-table {
+    @apply flex flex-col gap-20 items-center;
+}
+
+.form {
+    @apply flex flex-col gap-4 text-[1.6rem];
+}
+.form .form-control input {
+    @apply text-[1.6rem];
+}
+.form-control {
+    @apply flex flex-col gap-2 w-full;
+}
+.form-control input{
+    @apply input input-bordered input-accent w-full input-lg;
+}
+.form-control small {
+    @apply text-[75%] text-error ;
+}
+.action {
+    @apply mt-6;
+}
