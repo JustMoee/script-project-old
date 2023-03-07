@@ -11,7 +11,6 @@ const ContentComponent: FC<{
   mutator: () => void;
 }> = (prpo) => {
   const { header, data, type, mutator } = prpo;
-
   return (
     <>
       <section className="md:max-w-[80%] w-full">
@@ -105,7 +104,7 @@ const Table = ({ columns, data, type, mutator }: any) => {
                       edit
                     </label>
                     <label
-                      onClick={() => {
+                    onClick={() => {
                         deletItem((row["original"] as Subject).id!, type).then(
                           mutator
                         );

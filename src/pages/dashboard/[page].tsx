@@ -31,9 +31,7 @@ export default function DashboardPage() {
           <div
             className={
               style[
-                `dashboard-content-grid-layout${
-                  query.page == "subject" ? "-full" : ""
-                }`
+                `dashboard-content-grid-layout${page == "subject" ? "-full" : ""}`
               ]
             }
           >

@@ -62,8 +62,6 @@ const SubjectForm: FC<{
   error: any;
   handleChange: (d: string) => void;
 }> = (e) => {
-  console.log("value eee ==>", e.value);
-  console.log(" eee ==>", e);
   return (
     <>
       <div className={style["form-control"]}>
