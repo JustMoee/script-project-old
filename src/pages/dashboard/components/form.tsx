@@ -10,17 +10,17 @@ const FormComponent: FC<{
   type: "exercies" | "subject" | "lesson" | "content";
   data: Subject | Lesson | Content | Exercise;
   op: "add" | "edit";
+  mutator: () => void;
 }> = (e) => {
-  console.log('data from form ==> ', e.data)
+  console.log("data from form ==> ", e.data);
   return (
     <Formik
       initialValues={e.data}
       validationSchema={toFormikValidationSchema(SubjectSchema)}
       onSubmit={console.log}
     >
-      {({ errors, values, handleChange,initialValues}) => {
-
-        console.log('value initialValues==> ', initialValues)
+      {({ errors, values, handleChange, initialValues }) => {
+        console.log("value initialValues==> ", initialValues);
         return (
           <>
             <form className={style["form"]}>
@@ -41,7 +41,9 @@ const FormComponent: FC<{
             <div className={style.action}>
               <button
                 onClick={() => {
-                  action(values, "subject", e.op);
+                  action(values, "subject", e.op)
+                    .then(e.mutator)
+                    .then(() => document.getElementById("my-modal-4")?.click());
                 }}
                 className="btn"
               >
@@ -60,37 +62,36 @@ const SubjectForm: FC<{
   error: any;
   handleChange: (d: string) => void;
 }> = (e) => {
-
   return (
-  <>
-    <div className={style["form-control"]}>
-      <input
-        value={e.value["title"]}
-        onChange={e.handleChange("title")!}
-        placeholder="title"
-      />
-      <small>{e.error["title"]}</small>
-    </div>
-    <div className={style["form-control"]}>
-      <input
-        value={e.value["language"]}
-        onChange={e.handleChange("language")!}
-        placeholder="language"
-      />
-      <small>{e.error["language"]}</small>
-    </div>
-    <div className={style["form-control"]}>
-      <input
-        value={e.value["level"]}
-        onChange={e.handleChange("level")!}
-        placeholder="level"
-        type="number"
-      />
-      <small>{e.error["level"]}</small>
-    </div>
-  </>
-)};
-
+    <>
+      <div className={style["form-control"]}>
+        <input
+          value={e.value["title"]}
+          onChange={e.handleChange("title")!}
+          placeholder="title"
+        />
+        <small>{e.error["title"]}</small>
+      </div>
+      <div className={style["form-control"]}>
+        <input
+          value={e.value["language"]}
+          onChange={e.handleChange("language")!}
+          placeholder="language"
+        />
+        <small>{e.error["language"]}</small>
+      </div>
+      <div className={style["form-control"]}>
+        <input
+          value={e.value["level"]}
+          onChange={e.handleChange("level")!}
+          placeholder="level"
+          type="number"
+        />
+        <small>{e.error["level"]}</small>
+      </div>
+    </>
+  );
+};
 
 const LessonForm: FC<{
   value: any;
@@ -125,14 +126,6 @@ const LessonForm: FC<{
     </div>
   </>
 );
-
-
-
-
-
-
-
-
 
 const action = async (data: Subject, router: string, op: "add" | "edit") => {
   const res = await fetch(`/api/${router}`, {
