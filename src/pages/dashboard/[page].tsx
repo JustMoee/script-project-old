@@ -4,24 +4,63 @@ import SideMenuComponent from "./components/sidemenu";
 import style from "./style.module.css";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const { query, asPath, isReady } = useRouter();
   const { page } = query;
+  const [header, setHeader] = useState<any[]>([]);
 
-  const { data, error, isLoading, isValidating, mutate } = useSWR(
-    "/api/" + isReady ? page : new URL(asPath).pathname.split("/")[2],
-    async () => await fetch("/api/" + page).then((res) => res.json().then())
-  );
+  // const { data, error, isLoading, isValidating, mutate } = useSWR(
+  //   "/api/" + isReady ? page : new URL(asPath).pathname.split("/")[2],
+  //   async () => await fetch("/api/" + page).then((res) => res.json().then())
+  // );
+  const {
+    data = [],
+    error,
+    isLoading,
+    mutate,
+  } = useSWR("/api/" + page, async () => {
+    const prams = Object.keys(query)
+      .filter((e) => e.includes("_id"))
+      .map((e, i) => (i == 0 ? `?${e}=${query[e]}` : `&${e}=${query[e]}`))
+      .join();
+    console.log("prams ==> ", prams);
+    if (page !== undefined)
+      if (page === "subject")
+        return await fetch("/api/" + page + prams).then((res) =>
+          res.json().then().catch(res => [])
+        );
+
+    if (page === "lesson" && prams &&  query['subject_id'] !== undefined)
+      return await fetch("/api/" + page + prams).then((res) =>
+        res.json().then().catch(res => [])
+      );
+    if (page === "content" && prams &&  query['lesson_id'] !== undefined)
+      return await fetch("/api/" + page + '?lesson_id='+query['lesson_id']).then((res) =>
+        res.json().then().catch(res => [])
+      );
+    if (page === "exercise" && prams &&  query['content_id'] !== undefined)
+      return await fetch("/api/" + page + '?content_id='+query['content_id']).then((res) =>
+        res.json().then().catch(res => [])
+      );
+  });
   const passData = typeof data == "object" ? data : [{ name: "#", key: "pos" }];
-
+  useEffect(() => {
+    if (data.length)
+      setHeader(() => [
+        { name: "#", key: "pos" },
+        ...Object.keys(data?.[0]).map((e) => ({ name: e, key: e })),
+        ,
+      ]);
+  }, [data]);
   const mutator = () => {
     mutate("/api/" + page);
   };
-  const header = [
-    { name: "#", key: "pos" },
-    ...Object.keys(data?.[0] || {}).map((e) => ({ name: e, key: e })),
-  ];
+  // const header = [
+  //   { name: "#", key: "pos" },
+  //   ...Object.keys(data?.[0] || {}).map((e) => ({ name: e, key: e })),
+  // ];
 
   return (
     <>
