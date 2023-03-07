@@ -10,10 +10,9 @@ const ContentComponent: FC<{
   header: TableHeader[] | any[] | undefined;
   data: TableData[] | any[];
   type: "subject" | "lesson" | "content" | "exercies";
+  mutated: () => void;
 }> = (prpo) => {
-  const { header } = prpo;
-  const { data } = prpo;
-  const { type } = prpo;
+  const { header, data, type, mutated } = prpo;
   //  const {filter, setFilter} = useState<string>('');
   let counter = 0;
   console.log(prpo);
@@ -24,12 +23,13 @@ const ContentComponent: FC<{
           columns={header?.map((th) => ({ Header: th.name, accessor: th.key }))}
           data={data}
           type={type}
+          mutated={mutated}
         />
       </section>
     </>
   );
 };
-const Table = ({ columns, data, type, }: any) => {
+const Table = ({ columns, data, type, mutated}: any) => {
   const [form, setForm] = useState<Subject>({
     title: "",
     language: "",
@@ -58,7 +58,7 @@ const Table = ({ columns, data, type, }: any) => {
         <div></div>
         <div>
           <label className="btn btn-accent" htmlFor="my-modal-4" onClick={() => {
-           setForm({'title': '', language: '', level: 0}) 
+           setForm(pre => ({'title': '', language: '', level: 0})) 
            setOp('add')
           }}>
             {type}
@@ -95,7 +95,7 @@ const Table = ({ columns, data, type, }: any) => {
                       className="btn bg-warning text-white"
                       onClick={() => {
                         setOp('edit');
-                        setForm(row["original"] as Subject);
+                        setForm(pre => (row["original"] as Subject));
                         console.log("form ==<", form);
                         console.log("row ==<", row);
                       }}
@@ -103,7 +103,7 @@ const Table = ({ columns, data, type, }: any) => {
                       edit
                     </label>
                     <label
-                    onClick={() => deletItem((row['original'] as Subject).id!, type)}
+                    onClick={() => deletItem((row['original'] as Subject).id!, type, mutated)}
                       className="btn bg-error text-white"
                     >
                       delete
@@ -123,16 +123,16 @@ const Table = ({ columns, data, type, }: any) => {
           htmlFor=""
         >
           <div className="">{type}</div>
-          <FormComponent data={form} op={op} type={type} />
+          {/* <FormComponent data={form} op={op} type={type} /> */}
         </label>
       </label>
     </>
   );
 };
-const deletItem = async (id: string, type: string) => {
+const deletItem = async (id: string, type: string, mutated: () => void) => {
   await fetch('/api/'+type+"/?id="+id, {
     method:'DELETE'
-  }).then(() => console.log('delete success'))
+  }).then()
 }
 export default ContentComponent;
 

@@ -33,3 +33,6 @@ export const SubjectUpdateDTOSchema = SubjectSchema.extend({
 export type Subject = z.infer<
   typeof SubjectSchema | typeof SubjectUpdateDTOSchema
 >;
+
+
+export type SubjectData = z.infer< typeof SubjectSchema>

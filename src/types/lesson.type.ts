@@ -20,3 +20,6 @@ export const LessonUpdateDTOSchema = LessonSchema.extend({
 export type Lesson = z.infer<
   typeof LessonSchema | typeof LessonUpdateDTOSchema
 >;
+
+
+export type LessonData = z.infer<typeof LessonSchema>

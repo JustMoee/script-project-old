@@ -23,4 +23,6 @@ export const ContentSchema = z.object({
     typeof ContentSchema | typeof ContentUpdateDTOSchema
   >;
   
+
+  export type ContentData = z.infer<typeof ContentSchema>
   

@@ -2,44 +2,138 @@ import style from "../style.module.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { Subject } from "@/types/subject.type";
+import {SubjectData } from "@/types/subject.type";
 import useSWR from "swr";
-import { Lesson } from "@/types/lesson.type";
+import {  LessonData } from "@/types/lesson.type";
+import { Content, ContentData } from "@/types/content.type";
 
 export default function SideNavigatorComponent() {
   const [prams, setPrams] = useState<string>();
-  const [subject, setSubject] = useState<Subject[]>([]);
-  const [lesson, setLesson] = useState<Lesson[]>([]);
+  const [subject, setSubject] = useState<SubjectData[]>([]);
+  const [lesson, setLesson] = useState<LessonData[]>([]);
+  const [content, setContent] = useState<ContentData[]>([]);
   const router = useRouter();
-  
 
-  const {data, error, isLoading} = useSWR('/api/subject', async () => {
-    return await fetch('/api/subject').then(res => res.json()).then(res => {
- 
-      setSubject(res)
+  // const { data, error, isLoading } = useSWR("/api/subject", async () => {
+  //   return await fetch("/api/subject")
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       setSubject(res);
+  //     });
+  // });
 
-    })
-  } )
-  useEffect( () => {
+  useEffect(() => {
     if (!router.query) return;
 
-    
-    console.log("router ==> ", router.query);
+    if (router.query["page"] != "Subject"  )
+      fetch("/api/subject")
+        .then((res) => res.json() as Promise<SubjectData[]>)
+        .then((res) => setSubject(() => res));
+    if (
+      (router.query["page"] == "content" || router.query["page"] == "exercise" )  && 
+      router["query"]["subject_id"] !== undefined 
+    )
+      fetch("/api/lesson?subject_id=" + router["query"]["subject_id"])
+        .then((res) => res.json() as Promise<LessonData[]>)
+        .then((res) => setLesson(() => res));
+    if (
+      router.query["page"] == "exercise" &&
+      router["query"]["lesson_id"] !== undefined
+    )
+      fetch("/api/content?lesson_id=" + router["query"]["lesson_id"])
+        .then((res) => res.json() as Promise<ContentData[]>)
+        .then((res) => setContent(() => res));
   }, [router.query]);
   return (
     <>
       {router["query"]["page"] != "subject" ? (
         <ul className={style["side-menu-navigator"]}>
-          {router.query["page"] == "lesson" && (
+          {(router.query["page"] == "lesson" ||
+            router.query["page"] == "content" ||
+            router.query["page"] == "exercise") && (
             <>
               <li className="menu-title text-accent ">
-                <span className="text-bold text-[2rem] disabled " >Subject</span>
+                <span className="text-bold text-[2rem] disabled ">Subject</span>
               </li>
-              {subject.map(data => (<>
-                <li key={data.id} className={`${router.query['subject'] == data.id ? 'bg-accent-focus': ''} rounded-md`}>
-                  <a onClick={() => window.location.href = window.location.href+"?subject_id="+data.id}>{data.title}</a>
-                </li>
-              </>))}
+              {subject.map((data) => (
+                <>
+                  <li
+                    key={data.id}
+                    className={`${
+                      router.query["subject_id"] == data.id
+                        ? "bg-accent-focus"
+                        : ""
+                    } rounded-md`}
+                  >
+                    <a
+                      onClick={() =>
+                        (window.location.href =
+                          window.location.href + "?subject_id=" + data.id)
+                      }
+                    >
+                      {data.title}
+                    </a>
+                  </li>
+                </>
+              ))}
+            </>
+          )}
+          {(router.query["page"] == "content" ||
+            router.query["page"] == "exercise") && (
+            <>
+              <li className="menu-title text-accent ">
+                <span className="text-bold text-[2rem] disabled ">Lesson</span>
+              </li>
+              {lesson &&
+                lesson?.map((data) => (
+                  <>
+                    <li
+                      key={data.id}
+                      className={`${
+                        router.query["lesson_id"] == data.id
+                          ? "bg-accent-focus"
+                          : ""
+                      } rounded-md`}
+                    >
+                      <a
+                        onClick={() =>
+                          (window.location.href =
+                            window.location.href + "&lesson_id=" + data.id)
+                        }
+                      >
+                        {data.title}
+                      </a>
+                    </li>
+                  </>
+                ))}
+            </>
+          )}
+          {router.query["page"] == "exercise" && (
+            <>
+              <li className="menu-title text-accent ">
+                <span className="text-bold text-[2rem] disabled ">content</span>
+              </li>
+              {content.map((data) => (
+                <>
+                  <li
+                    key={data.id}
+                    className={`${
+                      router.query["content_id"] == data.id
+                        ? "bg-accent-focus"
+                        : ""
+                    } rounded-md`}
+                  >
+                    <a
+                      onClick={() =>
+                        (window.location.href =
+                          window.location.href + "&content_id=" + data.id)
+                      }
+                    >
+                      {data.title}
+                    </a>
+                  </li>
+                </>
+              ))}
             </>
           )}
           {/* <li>
@@ -53,10 +147,7 @@ export default function SideNavigatorComponent() {
   );
 }
 
-
-
 const navigateTo = (to: string, id: string) => {
   const href = window.location.href;
-  href.replace(/\?\w*/g, '')
-
-}
+  href.replace(/\?\w*/g, "");
+};
