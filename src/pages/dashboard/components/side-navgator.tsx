@@ -1,62 +1,59 @@
-import style from "../style.module.css";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import Loader from "@/components/Loader";
 import { Subject } from "@/types/subject.type";
+import { useRouter } from "next/router";
 import useSWR from "swr";
-import { Lesson } from "@/types/lesson.type";
+import style from "../style.module.css";
 
 export default function SideNavigatorComponent() {
-  const [prams, setPrams] = useState<string>();
-  const [subject, setSubject] = useState<Subject[]>([]);
-  const [lesson, setLesson] = useState<Lesson[]>([]);
-  const router = useRouter();
-  
+  const {
+    query: { page, subject },
+  } = useRouter();
 
-  const {data, error, isLoading} = useSWR('/api/subject', async () => {
-    return await fetch('/api/subject').then(res => res.json()).then(res => {
- 
-      setSubject(res)
-
-    })
-  } )
-  useEffect( () => {
-    if (!router.query) return;
-
-    
-    console.log("router ==> ", router.query);
-  }, [router.query]);
+  const { data, isLoading } = useSWR<Subject[]>(
+    ["/api/", "subject"],
+    async () => await fetch("/api/subject").then((res) => res.json().then())
+  );
   return (
     <>
-      {router["query"]["page"] != "subject" ? (
+      {page !== "subject" && (
         <ul className={style["side-menu-navigator"]}>
-          {router.query["page"] == "lesson" && (
+          {page === "lesson" && (
             <>
               <li className="menu-title text-accent ">
-                <span className="text-bold text-[2rem] disabled " >Subject</span>
+                <span className="text-bold text-[2rem] disabled ">Subject</span>
               </li>
-              {subject.map(data => (<>
-                <li key={data.id} className={`${router.query['subject'] == data.id ? 'bg-accent-focus': ''} rounded-md`}>
-                  <a onClick={() => window.location.href = window.location.href+"?subject_id="+data.id}>{data.title}</a>
-                </li>
-              </>))}
+              {isLoading ? (
+                <Loader />
+              ) : (
+                data?.map((data) => (
+                  <>
+                    <li
+                      key={data.id}
+                      className={`${
+                        subject === data.id ? "bg-accent-focus" : ""
+                      } rounded-md`}
+                    >
+                      <a
+                        onClick={() =>
+                          (window.location.href =
+                            window.location.href + "?subject_id=" + data.id)
+                        }
+                      >
+                        {data.title}
+                      </a>
+                    </li>
+                  </>
+                ))
+              )}
             </>
           )}
-          {/* <li>
-            <a>Item 2</a>
-          </li> */}
         </ul>
-      ) : (
-        <></>
       )}
     </>
   );
 }
 
-
-
 const navigateTo = (to: string, id: string) => {
   const href = window.location.href;
-  href.replace(/\?\w*/g, '')
-
-}
+  href.replace(/\?\w*/g, "");
+};
