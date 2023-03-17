@@ -11,6 +11,12 @@ export default function DashboardPage() {
   const { page } = query;
   const [header, setHeader] = useState<any[]>([]);
 
+
+  const [sSubjectId, setSSubjectId] = useState('');
+  const [sLessonId, setSLessonId] = useState('');
+  const [sContentId, setSContentId] = useState('');
+  const [sExericesId, setSExericesId] = useState('');
+
   // const { data, error, isLoading, isValidating, mutate } = useSWR(
   //   "/api/" + isReady ? page : new URL(asPath).pathname.split("/")[2],
   //   async () => await fetch("/api/" + page).then((res) => res.json().then())
@@ -21,6 +27,7 @@ export default function DashboardPage() {
     isLoading,
     mutate,
   } = useSWR("/api/" + page, async () => {
+    
     const prams = Object.keys(query)
       .filter((e) => e.includes("_id"))
       .map((e, i) => (i == 0 ? `?${e}=${query[e]}` : `&${e}=${query[e]}`))
@@ -32,16 +39,16 @@ export default function DashboardPage() {
           res.json().then().catch(res => [])
         );
 
-    if (page === "lesson" && prams &&  query['subject_id'] !== undefined)
-      return await fetch("/api/" + page + prams).then((res) =>
+    if (page === "lesson" && sSubjectId)
+      return await fetch("/api/" + page +'?subject_id='+ sSubjectId).then((res) =>
         res.json().then().catch(res => [])
       );
-    if (page === "content" && prams &&  query['lesson_id'] !== undefined)
-      return await fetch("/api/" + page + '?lesson_id='+query['lesson_id']).then((res) =>
+    if (page === "content" && sLessonId)
+      return await fetch("/api/" + page + '?lesson_id='+sLessonId).then((res) =>
         res.json().then().catch(res => [])
       );
-    if (page === "exercise" && prams &&  query['content_id'] !== undefined)
-      return await fetch("/api/" + page + '?content_id='+query['content_id']).then((res) =>
+    if (page === "exercise" && sContentId)
+      return await fetch("/api/" + page + '?content_id='+sContentId).then((res) =>
         res.json().then().catch(res => [])
       );
   });
@@ -57,6 +64,11 @@ export default function DashboardPage() {
   const mutator = () => {
     mutate("/api/" + page);
   };
+
+  
+
+
+
   // const header = [
   //   { name: "#", key: "pos" },
   //   ...Object.keys(data?.[0] || {}).map((e) => ({ name: e, key: e })),
@@ -70,11 +82,22 @@ export default function DashboardPage() {
           <div
             className={
               style[
-                `dashboard-content-grid-layout${page == "subject" ? "-full" : ""}`
+                `dashboard-content-grid-layout${
+                  page == "subject" ? "-full" : ""
+                }`
               ]
             }
           >
-            <SideNavigatorComponent />
+            <SideNavigatorComponent
+              sSubjectId={sSubjectId}
+              setSSubjectId={setSSubjectId}
+              sLessonId={sLessonId}
+              setSLessonId={setSLessonId}
+              sContentId={sContentId}
+              setSContentId={setSContentId}
+              sExericesId={sExericesId}
+              setSExericesId={setSExericesId}
+            />
             <section className={`${style["dashboard-nav-and-table"]}`}>
               <div className="navbar bg-base-100 border-solid border-[1px] border-accent">
                 <a className="btn btn-ghost normal-case text-xl">

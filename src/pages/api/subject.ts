@@ -112,6 +112,8 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
       
 
       const { data, error } = await request
+      console.log('dafdafd ==> ', error)
+
     if (data) return res.status(HttpStatusCode.Ok).json(data as Subject[]);
     else
       return res
