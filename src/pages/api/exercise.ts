@@ -53,6 +53,8 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
         content_id: body["content_id"],
         point: body["point"],
         code: body["code"],
+        description: body["description"] || '',
+        header: body["header"] || '',
       },
     ])
     .select();
