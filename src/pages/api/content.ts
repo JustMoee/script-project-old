@@ -24,7 +24,9 @@ export default function handler(
  * @description create content
  */
 async function post(req: NextApiRequest, res: NextApiResponse) {
-  const body = req["body"] as Content;
+  let body = req["body"] as Content;
+  if(typeof body == 'string')
+  body = JSON.parse(body) as Content
   // check if body exist or not
   if (!body || !Object.keys(body).length)
     return res.status(HttpStatusCode.BadRequest).json({
@@ -123,8 +125,12 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
  * @description update content data
  */
 async function put(req: NextApiRequest, res: NextApiResponse) {
-  const body = req["body"];
+  let body = req["body"];
   const param = req["query"];
+  if(typeof body == 'string')
+    body = JSON.parse(body) as Content
+
+  console.log('content update body ==> ', body)
   // check if body exist or not
   if (!body || !Object.keys(body).length)
     return res.status(HttpStatusCode.BadRequest).json({
@@ -154,6 +160,7 @@ async function put(req: NextApiRequest, res: NextApiResponse) {
     return res.status(HttpStatusCode.BadRequest).json({
       message: "[FAILED] somthing wrong happend",
       code: HttpStatusCode.BadRequest,
+      error: error
     });
   return res.status(HttpStatusCode.NotFound).json({ message: "not found" });
 }

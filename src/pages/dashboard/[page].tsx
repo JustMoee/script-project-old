@@ -117,6 +117,10 @@ export default function DashboardPage() {
                   data={passData}
                   mutator={mutator}
                   type={page as "subject" | "lesson" | "content" | "exercies"}
+                  sSubjectId={sSubjectId}
+                  sContentId={sContentId}
+                  sLessonId={sLessonId}
+
                 />
               )}
             </section>

@@ -20,7 +20,9 @@ export default function handler(
  * @description create exercise
  */
 async function post(req: NextApiRequest, res: NextApiResponse) {
-  const body = req["body"] as Exercise;
+  let body = req["body"] as Exercise;
+  if(typeof body == 'string')
+    body = JSON.parse(body) as Exercise
   // check if body exist or not
   if (!body || !Object.keys(body).length)
     return res.status(HttpStatusCode.BadRequest).json({
@@ -131,8 +133,10 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
  * @description update exercise data
  */
 async function put(req: NextApiRequest, res: NextApiResponse) {
-  const body = req["body"];
+  let body = req["body"];
   const param = req["query"];
+  if(typeof body == 'string')
+    body = JSON.parse(body) as Exercise
   // check if body exist or not
   if (!body || !Object.keys(body).length)
     return res.status(HttpStatusCode.BadRequest).json({
