@@ -13,7 +13,7 @@ type NavItem = {
 export default function SideMenuComponent(props: { pramsQuery: any }) {
   const { pramsQuery } = props;
   const [navItem, setNavItem] = useState([] as NavItem[]);
-
+  
   useEffect(() => {
     setNavItem([
       {

@@ -12,12 +12,14 @@ export const ContentSchema = z.object({
     }),
     subdescription: z.string().optional(),
     lesson_id: z.string({ required_error: "lesson_id is required" }).uuid(),
+    level: z.number().default(0).optional()
   });
   export const ContentUpdateDTOSchema = ContentSchema.extend({
     id: z.string().uuid().optional(),
     title: z.string().optional(),
     description: z.string().optional(), 
     lesson_id: z.string().uuid().optional(),
+    level: z.number().default(0).optional()
   });
   export type Content = z.infer<
     typeof ContentSchema | typeof ContentUpdateDTOSchema
