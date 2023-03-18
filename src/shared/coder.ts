@@ -40,12 +40,12 @@ function convertPattren(text: string, pattern:RegExp, className: string, tag = '
   return text
 }
 
-export function converter(text: string){
+export function converter(text: string, eKey: string){
   text = convertPattren(text, operatorsPattren, 'symbo');
   text = convertPattren(text, funcationPattren, 'funciton');
   text = convertPattren(text, keywordsPattrenAll, 'keyword');
   text = convertPattren(text, stringPattren, 'string');
-  text = convertPattren(text, inputPattren, 'input', 'input');
+  text = convertPattren(text, inputPattren, 'input '+eKey, 'input');
   return parse(`<section class="code_editor">${text}</section>`);
 }
 
