@@ -2,6 +2,8 @@ import CodeHighlight from "@/components/coder";
 import { Fira_Sans } from "@next/font/google";
 import style from "./style.module.css";
 import SidebarComponent from "./components/sidebar";
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const fira_sans = Fira_Sans({
   subsets: ["vietnamese"],
@@ -10,12 +12,13 @@ const fira_sans = Fira_Sans({
 
 
 export default function Layout({ children }:any) {
+
   return (
     <>
     <div  className={fira_sans.className}>
       <section className={style.doc}>
         <div>
-          <SidebarComponent />
+          {/* <SidebarComponent /> */}
         </div>
         <div className={style.content}>
         <main>{children}</main>
