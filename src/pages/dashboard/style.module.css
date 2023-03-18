@@ -36,7 +36,7 @@
 .form {
     @apply flex flex-col gap-4 text-[1.6rem];
 }
-.form .form-control input {
+.form .form-control input, .form .form-control textarea {
     @apply text-[1.6rem];
 }
 .form-control {
@@ -44,6 +44,10 @@
 }
 .form-control input{
     @apply input input-bordered input-accent w-full input-lg;
+}
+.form-control textarea {
+    @apply textarea textarea-bordered textarea-accent w-full textarea-lg;
+
 }
 .form-control small {
     @apply text-[75%] text-error ;

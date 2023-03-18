@@ -11,7 +11,7 @@ type NavItem = {
 export default function SideMenuComponent(props: { page: string }) {
   const { page } = props;
   const [navItem, setNavItem] = useState([] as NavItem[]);
-
+  
   useEffect(() => {
     setNavItem([
       {

@@ -112,6 +112,8 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
       
 
       const { data, error } = await request
+      console.log('dafdafd ==> ', error)
+
     if (data) return res.status(HttpStatusCode.Ok).json(data as Subject[]);
     else
       return res
@@ -124,8 +126,10 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
  * @description update subject data
  */
 async function put(req: NextApiRequest, res: NextApiResponse) {
-  const body = req["body"];
   const param = req["query"];
+  let body = req["body"] as Subject ;
+  if( typeof body == 'string')
+    body = JSON.parse(body as string) as Subject;
   // check if body exist or not
   if (!body || !Object.keys(body).length)
     return res.status(HttpStatusCode.BadRequest).json({
