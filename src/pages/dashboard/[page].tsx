@@ -4,6 +4,7 @@ import SideMenuComponent from "./components/sidemenu";
 import style from "./style.module.css";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
@@ -51,7 +52,10 @@ export default function DashboardPage() {
       return await fetch("/api/" + page + '?content_id='+sContentId).then((res) =>
         res.json().then().catch(res => [])
       );
-  });
+  }, {
+      isPaused: () => page == undefined,
+    }
+    );
   const passData = typeof data == "object" ? data : [{ name: "#", key: "pos" }];
   useEffect(() => {
     if (data.length)
@@ -77,7 +81,7 @@ export default function DashboardPage() {
   return (
     <>
       <main className={style["dashboard-layout"]}>
-        <SideMenuComponent pramsQuery={query} />
+        <SideMenuComponent page={page as string} />
         <section className={style["dashboard-content-layout"]}>
           <div
             className={
@@ -100,17 +104,10 @@ export default function DashboardPage() {
             />
             <section className={`${style["dashboard-nav-and-table"]}`}>
               <div className="navbar bg-base-100 border-solid border-[1px] border-accent">
-                <a className="btn btn-ghost normal-case text-xl">
-                  {query.page}
-                </a>
+                <a className="btn btn-ghost normal-case text-xl">{page}</a>
               </div>
-              {isLoading || !isReady ? (
-                <>
-                  <div
-                    className="radial-progress  animate-spin"
-                    style={{ "--value": 80 }}
-                  />
-                </>
+              {isLoading ? (
+                <Loader />
               ) : (
                 <ContentComponent
                   header={header}
