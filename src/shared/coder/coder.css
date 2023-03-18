@@ -23,8 +23,9 @@ span {
 .code_editor {
     padding: 30px;
     background-color: #2B2757;
-    width: 90%;
+    width: 97%;
     margin: auto;
-    height: 194px;
+    min-height: 194px;
     border-radius: 25px;
+    font-size: 1.4rem;
 }

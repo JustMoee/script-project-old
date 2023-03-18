@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
 import style from '../style.module.css';
-export default function SidebarComponent(prop: {subject: LoadSubject[]}) {
-  const {subject} = prop
+export default function SidebarComponent(prop: {subject: LoadSubject[], setLesson: any, lessonId: string}) {
+  const {subject, setLesson, lessonId } = prop
   return (
     <>
       <nav className={style.sidebar}>
@@ -15,10 +15,10 @@ export default function SidebarComponent(prop: {subject: LoadSubject[]}) {
           <div className={style.subject_list}>
             <label>{sub.title}</label>
             <ul>
-              {sub.Lesson.map((lesson, i) => 
+              { Array.isArray(sub.Lesson)&& sub.Lesson.map((lesson, i) => 
               <React.Fragment key={lesson.id}>
                 <li>
-                  <a>
+                  <a  className={lessonId == lesson.id ? style.active : ''} onClick={() => setLesson(() => lesson.id)}>
                   <span>{i}</span>
                     <div>{lesson.title}</div>
                   </a>

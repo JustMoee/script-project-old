@@ -62,7 +62,7 @@
 
 }
 
-.subject_list > ul > li:hover a,.active > a {
+.subject_list > ul > li:hover a,.active {
   transition: all 300ms ease-out;
   background-color: var(--p4);
 }
@@ -86,4 +86,40 @@
   width: 99%;
   border: 1px solid var(--p2);
   margin: 5rem auto;
+  @apply p-20;
+
+}
+.content h1 {
+  @apply text-[4rem] font-bold text-p2; 
+}
+.content h2 {
+  @apply text-[3.4rem] font-bold text-p2; 
+}
+
+.content h3 {
+  @apply text-[2.4rem] font-bold text-w1; 
+}
+.content h4 {
+  @apply text-[2.4rem] font-bold text-t1 capitalize; 
+}
+
+.content .description {
+  @apply text-[1.6rem] font-light text-w1;
+}
+.content main > section {
+  @apply flex flex-col gap-16;
+}
+.content main > section > div {
+  @apply flex flex-col gap-16;
+}
+
+.content .code_editor {
+  @apply text-[1rem];
+}
+.exerices_dsec {
+  @apply text-[1.4rem] font-light ;
+}
+.run_btn {
+  @apply  bg-p2 text-p1 font-normal text-[1.6rem] border-p1 rounded-md btn btn-lg hover:bg-p1 hover:text-p2 hover:border-p2;
+
 }

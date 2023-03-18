@@ -1,3 +1,4 @@
+
 import style from "../style.module.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -7,6 +8,7 @@ import useSWR from "swr";
 import {  LessonData } from "@/types/lesson.type";
 import { Content, ContentData } from "@/types/content.type";
 import { Exercise } from '@/types/exercise.type';
+import Loader from "@/components/Loader";
 
 export default function SideNavigatorComponent(
   prop: any
@@ -72,41 +74,12 @@ const getContent = () => {
       return;
      getContent();
   },[sLessonId])
-
-  // const { data, error, isLoading } = useSWR("/api/subject", async () => {
-  //   return await fetch("/api/subject")
-  //     .then((res) => res.json())
-  //     .then((res) => {
-  //       setSubject(res);
-  //     });
-  // });
-
-  // useEffect(() => {
-  //   if (!router.query) return;
-
-  //   if (router.query["page"] != "Subject"  )
-  //     fetch("/api/subject")
-  //       .then((res) => res.json() as Promise<SubjectData[]>)
-  //       .then((res) => setSubject(() => res));
-  //   if (
-  //     (router.query["page"] == "content" || router.query["page"] == "exercise" )  && 
-  //     router["query"]["subject_id"] !== undefined 
-  //   )
-  //     fetch("/api/lesson?subject_id=" + router["query"]["subject_id"])
-  //       .then((res) => res.json() as Promise<LessonData[]>)
-  //       .then((res) => setLesson(() => res));
-  //   if (
-  //     router.query["page"] == "exercise" &&
-  //     router["query"]["lesson_id"] !== undefined
-  //   )
-  //     fetch("/api/content?lesson_id=" + router["query"]["lesson_id"])
-  //       .then((res) => res.json() as Promise<ContentData[]>)
-  //       .then((res) => setContent(() => res));
-  // }, [router.query]);
+ 
   return (
     <>
-      {router["query"]["page"] != "subject" ? (
+      {router.query["page"]  !== "subject" && (
         <ul className={style["side-menu-navigator"]}>
+
           {(router.query["page"] == "lesson" ||
             router.query["page"] == "content" ||
             router.query["page"] == "exercise") && (
@@ -114,6 +87,7 @@ const getContent = () => {
               <li className="menu-title text-accent ">
                 <span className="text-bold text-[2rem] disabled ">Subject</span>
               </li>
+
               {subject && subject.map((data) => (
                 <>
                   <li
@@ -148,6 +122,7 @@ const getContent = () => {
                     <li
                       key={data.id}
                       className={`${
+
                         sLessonId == data.id
                           ? "bg-accent-focus"
                           : ""
@@ -162,6 +137,7 @@ const getContent = () => {
                       </a>
                     </li>
                   </>
+
                 ))}
             </>
           )}
@@ -192,12 +168,7 @@ const getContent = () => {
               ))}
             </>
           )}
-          {/* <li>
-            <a>Item 2</a>
-          </li> */}
         </ul>
-      ) : (
-        <></>
       )}
     </>
   );

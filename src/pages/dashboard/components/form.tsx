@@ -214,7 +214,7 @@ const ExrciesForm: FC<{
         onChange={e.handleChange("point")!}
         placeholder="point"
       />
-      <small>{e.error["title"]}</small>
+      <small>{e.error["point"]}</small>
     </div>
 
     
@@ -236,6 +236,23 @@ const ExrciesForm: FC<{
         rows={3}
       ></textarea>
       <small>{e.error["answers"]}</small>
+    </div>
+    <div className={style["form-control"]}>
+      <input
+        value={e.value["header"]}
+        onChange={e.handleChange("header")!}
+        placeholder="header"
+      />
+      <small>{e.error["header"]}</small>
+    </div>
+    <div className={style["form-control"]}>
+      <textarea
+        value={e.value["description"]}
+        onChange={e.handleChange("description")!}
+        placeholder="description"
+        rows={3}
+      ></textarea>
+      <small>{e.error["description"]}</small>
     </div>
   </>
 );
@@ -297,8 +314,10 @@ const exerciseAction = async (data: Exercise, contentId:string, op: 'add' | 'edi
     level: data['level'],
     answers: !Array.isArray(data['answers']) ? (data['answers'] as string).split(','): data['answers'],
     code: data['code'],
-    point: data['point'],
-    content_id: contentId
+    point: data['point'] ? +data['point'] : 0,
+    content_id: contentId,
+    description: data['description'],
+    header: data['header'],
   }
   const res = await fetch('/api/exercise' + (op == 'add'? '' : `?id=${data.id}`), {
     method: op == 'add'? 'POST' : "PATCH",

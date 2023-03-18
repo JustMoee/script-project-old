@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import React, { FC } from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IconType } from "react-icons";
 import { CiPlug1, CiShirt } from "react-icons/ci";
 import style from "../style.module.css";
@@ -10,8 +8,8 @@ type NavItem = {
   path: string;
   icon: IconType;
 };
-export default function SideMenuComponent(props: { pramsQuery: any }) {
-  const { pramsQuery } = props;
+export default function SideMenuComponent(props: { page: string }) {
+  const { page } = props;
   const [navItem, setNavItem] = useState([] as NavItem[]);
   
   useEffect(() => {
@@ -29,16 +27,13 @@ export default function SideMenuComponent(props: { pramsQuery: any }) {
     ]);
   }, []);
 
-  const router = useRouter();
   return (
     <>
       <ul className={style["side-menu"]}>
         <li>
           <Link
             href={"/dashboard/subject"}
-            className={`${
-              pramsQuery["page"] == "subject" ? style["active"] : ""
-            }`}
+            className={`${page === "subject" ? style["active"] : ""}`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -59,9 +54,7 @@ export default function SideMenuComponent(props: { pramsQuery: any }) {
         <li>
           <Link
             href="/dashboard/lesson"
-            className={`${
-              pramsQuery["page"] == "lesson" ? style["active"] : ""
-            }`}
+            className={`${page === "lesson" ? style["active"] : ""}`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -82,9 +75,7 @@ export default function SideMenuComponent(props: { pramsQuery: any }) {
         <li>
           <Link
             href="/dashboard/content"
-            className={`${
-              pramsQuery["page"] == "content" ? style["active"] : ""
-            }`}
+            className={`${page === "content" ? style["active"] : ""}`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -105,9 +96,7 @@ export default function SideMenuComponent(props: { pramsQuery: any }) {
         <li>
           <Link
             href="/dashboard/exercise"
-            className={`${
-              pramsQuery["page"] == "exercise" ? style["active"] : ""
-            }`}
+            className={`${page === "exercise" ? style["active"] : ""}`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

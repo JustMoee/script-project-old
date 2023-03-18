@@ -53,6 +53,8 @@ async function post(req: NextApiRequest, res: NextApiResponse) {
         content_id: body["content_id"],
         point: body["point"],
         code: body["code"],
+        description: body["description"] || '',
+        header: body["header"] || '',
       },
     ])
     .select();
@@ -113,11 +115,15 @@ async function get(req: NextApiRequest, res: NextApiResponse) {
         code: HttpStatusCode.NotFound,
       });
   } else {
-    const { data, error } = await supabase
-      .from(TABLE)
-      .select()
-      .eq("isActive", true)
-      .eq("isDeleted", false);
+    let request  = supabase
+    .from(TABLE)
+    .select()
+    .eq("isActive", true)
+    .eq("isDeleted", false);
+    if(param['content_id'])
+      request = request.eq("content_id", param['content_id'])
+    const { data, error } = await request
+;
     if (data) {
       for (let i = 0; i < data.length; i++)
         data[i]["answers"] = (data[i]["answers"] as string).split(";");
