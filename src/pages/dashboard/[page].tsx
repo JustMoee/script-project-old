@@ -4,7 +4,7 @@ import SideMenuComponent from "./components/sidemenu";
 import style from "./style.module.css";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-
+import Loader from "@/components/Loader";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {

@@ -8,6 +8,7 @@ import useSWR from "swr";
 import {  LessonData } from "@/types/lesson.type";
 import { Content, ContentData } from "@/types/content.type";
 import { Exercise } from '@/types/exercise.type';
+import Loader from "@/components/Loader";
 
 export default function SideNavigatorComponent(
   prop: any
@@ -76,7 +77,7 @@ const getContent = () => {
  
   return (
     <>
-      {page !== "subject" && (
+      {router.query["page"]  !== "subject" && (
         <ul className={style["side-menu-navigator"]}>
 
           {(router.query["page"] == "lesson" ||
