@@ -25,7 +25,7 @@ export default function PageContentComponent(prop: {
                   )}
                   {Array.isArray(content.Exercise) &&
                     content.Exercise.map((exericse) => {
-                        const eKey = exericse.id.substring(0,5);
+                        const eKey = "Key_"+exericse.id.substring(0,5);
                         return(
                       <React.Fragment key={exericse.id}>
                         <h4>{exericse.header}</h4>

@@ -46,6 +46,13 @@ export function converter(text: string, eKey: string){
   text = convertPattren(text, keywordsPattrenAll, 'keyword');
   text = convertPattren(text, stringPattren, 'string');
   text = convertPattren(text, inputPattren, 'input '+eKey, 'input');
-  return parse(`<section class="code_editor">${text}</section>`);
+  return parse(`<section class="code_editor">
+  <pre>
+  <code>
+  
+  ${text}
+  </code>
+  </pre>
+  </section>`);
 }
 
